@@ -1,9 +1,9 @@
 pipeline{
-	agent {label 'agent2'}
+	agent any
 	stages{
 		stage('gitcheckout'){
 		  steps{
-			git 'https://github.com/aithalias/java_repo1.git'
+			git 'https://github.com/Nithishkumar0064/new-java-project.git'
 		    }
 		}
 		stage('build'){
