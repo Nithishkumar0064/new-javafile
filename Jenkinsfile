@@ -2,7 +2,7 @@
 pipeline {
     environment {
   registry = 'nithishnithi/multi-tomcat2'
-  containerName = 'my-container1'     
+  containerName = 'my-container2'     
   registryCredentials = 'Docker_credential'
  }
     agent {label'docker'}
