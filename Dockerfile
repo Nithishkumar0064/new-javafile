@@ -3,5 +3,5 @@ WORKDIR /javaapp
 COPY . .
 RUN mvn clean install
 
-FROM adhig93/tomcat-conf
+FROM artisantek/tomcat:1
 COPY --from=build /javaapp/target/*.war /usr/local/tomcat/webapps/
