@@ -9,7 +9,7 @@ pipeline {
     stages{
         stage('git-checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Nithishkumar0064/java-example.git'
+                git branch: 'main', url: 'https://github.com/Nithishkumar0064/new-javafile.git'
             }
         }
         stage('Build docker image'){
