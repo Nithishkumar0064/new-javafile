@@ -1,40 +1,32 @@
 #!groovy
 pipeline {
-    environment {
-  registry = 'nithishnithi/tomcat2'
-  containerName = 'my-container2'
-  registryCredentials = 'Docker_credential'
- }
-    agent {label'docker'}
+    environment {     
+           registryCredentials = credentials('Docker_credential')
+    }
+    agent { label 'docker' }
     stages{
         stage('git-checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/Nithishkumar0064/new-javafile.git'
+                git branch: 'master', url:'https://github.com/Nithishkumar0064/new-javafile.git'
             }
         }
         stage('Build docker image'){
             steps {
-                   sh 'image = docker.build("${registry}:$BUILD_NUMBER")'
-                
+		        sh 'docker build -t ${registryCredentials_USR}/tomcat3:${BUILD_ID} .'
             }
         }
         stage('Push image to Hub'){
             steps {
-                sh 'echo Registry-push'
-                sh '''
-                    docker.withRegistry('', registryCredentials) 
-                        image.push()
-                        image.push('latest')
-                     '''
-                
+                sh 'docker login -u ${registryCredentials_USR} -p ${registryCredentials_PSW}'
+		        sh 'docker push ${registryCredentials_USR}/tomcat3:${BUILD_ID}'
             }
         }
-        stage('Deploy') {
+        stage('Deploy ') {
             steps {
-                sh 'docker run -itd --name ${containerName} -p 8090:8080 ${registry}'
+                sh 'docker run -itd --name cont-${BUILD_ID} -p 8000:8080 ${registryCredentials_USR}/tomcat3:${BUILD_ID}'
             }
             
         }
         
-      }
-    }
+   }
+}
