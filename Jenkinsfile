@@ -1,41 +1,40 @@
 #!groovy
 pipeline {
     environment {
-  registry = 'nithishnithi/multi-tomcat2'
-  containerName = 'my-container2'     
+  registry = 'nithishnithi/tomcat2'
+  containerName = 'my-container2'
   registryCredentials = 'Docker_credential'
  }
     agent {label'docker'}
     stages{
         stage('git-checkout') {
             steps {
-                git branch: 'master', url:'https://github.com/Nithishkumar0064/new-javafile.git'
+                git branch: 'main', url: 'https://github.com/Nithishkumar0064/java-example.git'
             }
         }
         stage('Build docker image'){
             steps {
+                   sh 'image = docker.build("${registry}:$BUILD_NUMBER")'
                 
-                    sh 'image = docker.build("${registry}:$BUILD_NUMBER")'
-                }
             }
         }
         stage('Push image to Hub'){
             steps {
                 sh 'echo Registry-push'
                 sh '''
-                    docker.withRegistry('', registryCredentials) {
+                    docker.withRegistry('', registryCredentials) 
                         image.push()
                         image.push('latest')
-                        '''
-                }
+                     '''
+                
             }
         }
-        stage('Deploy ') {
+        stage('Deploy') {
             steps {
-                sh 'docker run -itd --name ${containerName} -p 8000:8080 ${registry}'
+                sh 'docker run -itd --name ${containerName} -p 8090:8080 ${registry}'
             }
             
         }
         
+      }
     }
-}
