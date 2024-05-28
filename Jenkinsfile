@@ -22,11 +22,11 @@ pipeline {
         stage('Push image to Hub'){
             steps {
                 sh 'echo Registry-push'
-                script {
+                sh '''
                     docker.withRegistry('', registryCredentials) {
                         image.push()
                         image.push('latest')
-                    }
+                        '''
                 }
             }
         }
